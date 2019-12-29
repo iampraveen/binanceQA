@@ -1,4 +1,5 @@
 # binanceQA
+Added circleCI
 
 1. Install npm
 2. Install cypress
