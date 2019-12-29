@@ -1,0 +1,20 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/
+    docker:
+      - image: cypress/base:8
+    steps:
+      - checkout:
+          path: ~/binanceQA
+      - run:
+          name: Install node dependency
+          command: npm i
+      - run:
+          name: Run e2e test suite
+          command: npx cypress open
+workflows:
+  version: 2
+  platform:
+    jobs:
+      - build
