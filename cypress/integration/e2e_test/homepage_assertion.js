@@ -65,7 +65,7 @@ describe('Window', () => {
   })
 
     
-    it.only('Verify websocket data', () => {
+    it('Verify websocket data', () => {
             cy.visit('https://www.binance.com/en/trade/ETH_BTC')
             tableNGraphDataLoad();
             cy.streamRequest(graphData).then(results => {
