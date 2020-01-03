@@ -59,11 +59,11 @@ describe('Window', () => {
   })
 
     
-    it('Verify websocket data', () => {
+    it.only('Verify websocket data', () => {
             cy.visit('https://www.binance.com/en/trade/ETH_BTC')
             tableNGraphDataLoad();
-            cy.wait('@currencyList')
-            cy.wait('@conversionList')
-            cy.wait('@graphContainer')
+            cy.wait('@currencyList').its('status').should('eq', 200)
+            cy.wait('@conversionList').its('status').should('eq', 200)
+            cy.wait('@graphContainer').its('status').should('eq', 200)
     })
 })
