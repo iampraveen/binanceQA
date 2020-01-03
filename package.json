@@ -10,6 +10,7 @@
   "license": "ISC",
   "devDependencies": {
     "@lensesio/cypress-websocket-testing": "^1.0.1",
-    "cypress": "^3.3.0"
+    "cypress": "^3.3.0",
+    "prettier": "1.19.1"
   }
 }
