@@ -28,7 +28,7 @@ describe('Window', () => {
         })
     }
   
-    it('Verify pair trading view ', () => {
+    it('Verify pair trading view Page', () => {
         cy.visit('http://www.binance.com')
         cy.contains('Markets').should('be.visible').click();   
         cy.get('.css-p1jcpo').should('not.exist')   //loader should not exist
@@ -42,7 +42,7 @@ describe('Window', () => {
         cy.contains('Recent Market')
     })
 
-    it.only('Assert currency conversion formula', () =>{
+    it('Assert currency conversion formula', () =>{
         cy.visit('https://www.binance.com/en/trade/ETH_BTC');
         cy.get('.css-p1jcpo').should('not.exist')   //loader should not exist
         tableNGraphDataLoad(); 
