@@ -33,6 +33,12 @@ describe('Window', () => {
             expect($graph).to.be.length(8)
         })
     }
+
+    function assertSocketStream(content){
+        cy.streamRequest(content).then(results => {
+            expect(results).not.to.be.empty;
+            }) 
+    }
   
     it('Verify pair trading view Page', () => {
         cy.visit('http://www.binance.com')
@@ -68,14 +74,10 @@ describe('Window', () => {
     it('Verify websocket data', () => {
             cy.visit('https://www.binance.com/en/trade/ETH_BTC')
             tableNGraphDataLoad();
-            cy.streamRequest(graphData).then(results => {
-            expect(results).not.to.be.empty;
-            }) 
-            cy.streamRequest(tableData).then(results => {
-            expect(results).not.to.be.empty;
-            })         
             cy.wait('@currencyList').its('status').should('eq', 200)
             cy.wait('@conversionList').its('status').should('eq', 200)
             cy.wait('@graphContainer').its('status').should('eq', 200)
+            assertSocketStream(graphData);
+            assertSocketStream(tableData);        
     })
 })
