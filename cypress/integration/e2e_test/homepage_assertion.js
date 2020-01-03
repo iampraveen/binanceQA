@@ -4,18 +4,18 @@ describe('Window', () => {
         cy.server()
         cy.route({
         method: 'GET',
-        url: '**/gateway-api/v1/public/chat-language/list',
-        }).as('chat')
+        url: '**/api/v1/klines?symbol=ETHBTC&interval=1h',
+        }).as('graphContainer')
 
         cy.route({
         method: 'GET',
         url: '**/exchange-api/v1/public/asset-service/product/currency',
-        }).as('currency')
+        }).as('currencyList')
 
         cy.route({
         method: 'GET',
         url: '**/api/v1/depth?limit=500&symbol=ETHBTC',
-        }).as('conversionData')
+        }).as('conversionList')
     })
 
     function tableNGraphDataLoad(){
@@ -62,8 +62,8 @@ describe('Window', () => {
     it('Verify websocket data', () => {
             cy.visit('https://www.binance.com/en/trade/ETH_BTC')
             tableNGraphDataLoad();
-            cy.wait('@chatShowButton')
-            cy.wait('@chat')
-            cy.wait('@chartContainer')
+            cy.wait('@currencyList')
+            cy.wait('@conversionList')
+            cy.wait('@graphContainer')
     })
 })
