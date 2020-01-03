@@ -7,6 +7,6 @@ Added circleCI
 4. Run 'homepage_assertion.js' in 'integration/e2e_test' folder
 
 #e2e test
-cypress/integration/examples
+cypress/integration/e2e_test
 cypress/videos
 cypress/screenshots
