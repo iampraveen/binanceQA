@@ -1,5 +1,11 @@
 describe('Window', () => {
     const amount = 734
+    const graphData = {
+        url: "wss://stream.binance.com/stream?streams=ethbtc@kline_1h"
+        };
+    const tableData = {
+        url: "wss://stream.binance.com/stream?streams=!miniTicker@arr@3000ms/ethbtc@depth.b10/ethbtc@aggTrade.b10"
+        };
     beforeEach(() => {
         cy.server()
         cy.route({
@@ -62,6 +68,12 @@ describe('Window', () => {
     it.only('Verify websocket data', () => {
             cy.visit('https://www.binance.com/en/trade/ETH_BTC')
             tableNGraphDataLoad();
+            cy.streamRequest(graphData).then(results => {
+            expect(results).not.to.be.empty;
+            }) 
+            cy.streamRequest(tableData).then(results => {
+            expect(results).not.to.be.empty;
+            })         
             cy.wait('@currencyList').its('status').should('eq', 200)
             cy.wait('@conversionList').its('status').should('eq', 200)
             cy.wait('@graphContainer').its('status').should('eq', 200)

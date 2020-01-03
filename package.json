@@ -11,6 +11,7 @@
   "devDependencies": {
     "@lensesio/cypress-websocket-testing": "^1.0.1",
     "cypress": "^3.3.0",
-    "prettier": "1.19.1"
+    "prettier": "1.19.1",
+    "rxjs": "^6.5.4"
   }
 }
