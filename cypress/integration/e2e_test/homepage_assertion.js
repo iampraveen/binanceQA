@@ -1,17 +1,12 @@
-describe('Window', () => {
-    const amount = 734
-    const graphData = {
-        url: "wss://stream.binance.com/stream?streams=ethbtc@kline_1h"
-        };
-    const tableData = {
-        url: "wss://stream.binance.com/stream?streams=!miniTicker@arr@3000ms/ethbtc@depth.b10/ethbtc@aggTrade.b10"
-        };
+describe('Assert Market link lead to ETH/BTC homepage ', () => {
+
     beforeEach(() => {
+        //tracking network request for route assertion
         cy.server()
         cy.route({
         method: 'GET',
         url: '**/api/v1/klines?symbol=ETHBTC&interval=1h',
-        }).as('graphContainer')
+        }).as('tradingChart')
 
         cy.route({
         method: 'GET',
@@ -21,63 +16,34 @@ describe('Window', () => {
         cy.route({
         method: 'GET',
         url: '**/api/v1/depth?limit=500&symbol=ETHBTC',
-        }).as('conversionList')
+        }).as('depth')
     })
-
-    function tableNGraphDataLoad(){
-        cy.get('.ReactVirtualized__Grid > .ReactVirtualized__Grid__innerScrollContainer span').then($tables =>{  
-            expect($tables).not.to.be.empty         //table data shouldn't be empty
-        })
-        cy.get('.chartContainer canvas').then($graph => {
-            expect($graph).to.be.visible            //graph should be visible
-            expect($graph).to.be.length(8)
-        })
-    }
-
-    function assertSocketStream(content){
-        cy.streamRequest(content).then(results => {
-            expect(results).not.to.be.empty;
-            }) 
-    }
   
-    it('Verify pair trading view Page', () => {
+    it('Assert trading chart, limit, market, stop limit input boxes is loaded properly on ETH/BTC page', () => {
         cy.visit('http://www.binance.com')
-        cy.contains('Markets').should('be.visible').click();   
-        cy.get('.css-p1jcpo').should('not.exist')   //loader should not exist
+        cy.contains('Markets').should('be.visible').click()
+        //to proceed waiting for loader spin to disappear   
+        cy.get('.css-p1jcpo').should('not.exist')   
         cy.get('.chatShowButton').should('be.visible')     
-        cy.get('a[href*="/en/trade/ETH_BTC"]') .click() 
+        cy.get('a[href*="/en/trade/ETH_BTC"]').click() 
+        // Should be on a new URL which includes '/trade/ETH_BTC'
         cy.url().should('contain', '/trade/ETH_BTC')
         cy.get('.chatShowButton').should('be.visible') 
-        tableNGraphDataLoad();  
+        // Relevant API status should be successfull
+        cy.wait('@currencyList').its('status').should('eq', 200)
+        cy.wait('@depth').its('status').should('eq', 200)
+        cy.wait('@tradingChart').its('status').should('eq', 200)
+        //should render currency in tables
+        cy.get('.ReactVirtualized__Grid > .ReactVirtualized__Grid__innerScrollContainer span').then($currencyTables =>{  
+            expect($currencyTables).not.to.be.empty         
+        })
+        //trading chart should be visible
+        cy.get('.chartContainer canvas').then($tradingChart => {
+            expect($tradingChart).to.be.visible            
+            expect($tradingChart).to.be.length(8)
+        }) 
         cy.contains('Stop-limit')
         cy.contains('Trade History')
         cy.contains('Recent Market')
-    })
-
-    it('Assert currency conversion formula', () =>{
-        cy.visit('https://www.binance.com/en/trade/ETH_BTC');
-        cy.get('.css-p1jcpo').should('not.exist')   //loader should not exist
-        tableNGraphDataLoad(); 
-        cy.get('#FormRow-BUY-quantity').type(amount).should('have.value',amount.toString())
-        cy.get('#FormRow-BUY-price').invoke('val').then(($buyPrice) => {
-            cy.get('#FormRow-BUY-total').invoke('val').then(($total) => {
-                expect($total).to.include(($buyPrice*amount).toString())
-            })           
-        })
-        cy.get('[id=trade-orderForm-a-BUYlogin]').then(()=>{
-            cy.get('[id=orderForm-button-exchangelimitBuy]').should('not.exist')
-        })
-  
-  })
-
-    
-    it('Verify websocket data', () => {
-            cy.visit('https://www.binance.com/en/trade/ETH_BTC')
-            tableNGraphDataLoad();
-            cy.wait('@currencyList').its('status').should('eq', 200)
-            cy.wait('@conversionList').its('status').should('eq', 200)
-            cy.wait('@graphContainer').its('status').should('eq', 200)
-            assertSocketStream(graphData);
-            assertSocketStream(tableData);        
     })
 })
