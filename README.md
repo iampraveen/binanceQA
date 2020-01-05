@@ -15,8 +15,7 @@ This assignment comprises end-to-end test script which covers below three scenar
 * Verify currency coversion formula is working properly.
 * Verify data is loaded and there is consistent stream of data.
 
-### Refer https://github.com/tradeling/coding-tasks/tree/master/qa-automation for detailed scenarios and acceptance criteria.
-	
+
 ## Technologies
 Project is created with:
 * npm version: 6.12.1
@@ -41,3 +40,7 @@ Image based testing (Screenshot diffing)
 
 ## Author
 Praveen Jaiswal
+
+## Reference
+* https://github.com/tradeling/coding-tasks/tree/master/qa-automation for detailed scenarios and acceptance criteria.
+
