@@ -1,4 +1,11 @@
-describe('Assert Market link lead to ETH/BTC homepage ', () => {
+describe('Assert websocket data is consistent', () => {
+    // defind websocket ur  which is responsible for data to be render in chart and tables respectively
+    const chartData = {
+        url: "wss://stream.binance.com/stream?streams=ethbtc@kline_1h"
+        };
+    const tableData = {
+        url: "wss://stream.binance.com/stream?streams=!miniTicker@arr@3000ms/ethbtc@depth.b10/ethbtc@aggTrade.b10"
+        };
 
     beforeEach(() => {
         //tracking network request for route assertion
@@ -17,22 +24,26 @@ describe('Assert Market link lead to ETH/BTC homepage ', () => {
         method: 'GET',
         url: '**/api/v1/depth?limit=500&symbol=ETHBTC',
         }).as('depth')
+
+        cy.visit('https://www.binance.com/en/trade/ETH_BTC')
     })
-  
-    it('Assert trading chart, limit, market, stop limit input boxes is loaded properly on ETH/BTC page', () => {
-        cy.visit('http://www.binance.com')
-        cy.contains('Markets').should('be.visible').click()
-        //to proceed waiting for loader spin to disappear   
-        cy.get('.css-p1jcpo').should('not.exist')   
-        cy.get('.chatShowButton').should('be.visible')     
-        cy.get('a[href*="/en/trade/ETH_BTC"]').click() 
-        // Should be on a new URL which includes '/trade/ETH_BTC'
-        cy.url().should('contain', '/trade/ETH_BTC')
-        cy.get('.chatShowButton').should('be.visible') 
+
+    function assertSocketStream(content){
+        cy.streamRequest(content).then(results => {
+        expect(results).not.to.be.empty;
+        }) 
+    }
+
+    it('Verify data is loaded properly and there is consistent stream of data', () => {
+        //1. Verify data is loaded properly
+
         // Relevant API status should be successfull
         cy.wait('@currencyList').its('status').should('eq', 200)
         cy.wait('@depth').its('status').should('eq', 200)
         cy.wait('@tradingChart').its('status').should('eq', 200)
+
+        // chat button should be visible
+        cy.get('.chatShowButton').should('be.visible') 
         //should render currency in tables
         cy.get('.ReactVirtualized__Grid > .ReactVirtualized__Grid__innerScrollContainer span').then($currencyTables =>{  
             expect($currencyTables).not.to.be.empty         
@@ -42,8 +53,9 @@ describe('Assert Market link lead to ETH/BTC homepage ', () => {
             expect($tradingChart).to.be.visible            
             expect($tradingChart).to.be.length(8)
         }) 
-        cy.contains('Stop-limit')
-        cy.contains('Trade History')
-        cy.contains('Recent Market')
-    })
+
+        // 2. Verify there is consistent stream of data through websocket 
+        assertSocketStream(chartData);
+        assertSocketStream(tableData); 
+    }) 
 })
