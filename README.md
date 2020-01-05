@@ -5,15 +5,15 @@
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Running the tests](#running the tests)
-* [To Do](#to do)
+* [Running the tests](#running-the-tests)
+* [To Do](#to-do)
 * [Author](#author)
 
 ## General info
 This assignment comprises end-to-end test script of binance.com. It covers below three scenarios:
-a) Verify hompage data is loading properly.
-b) Verify currency coversion formula is working properly.
-c) Verify data is loaded and there is consistent stream of data.
+* Verify hompage data is loading properly.
+* Verify currency coversion formula is working properly.
+* Verify data is loaded and there is consistent stream of data.
 	
 ## Technologies
 Project is created with:
