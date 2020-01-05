@@ -24,5 +24,3 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import { addStreamCommands } from '@lensesio/cypress-websocket-testing';
-addStreamCommands();
