@@ -48,7 +48,7 @@ Praveen Jaiswal
 * Automated desktop application using winium when there is not much community support. Learnt by doing.
 * Wrote automation script in every language except Perl.
 * Replaced my team lead and managed US client single handedly. Responsible ranging from taking requiremnets,creating 
-automation framework, CI pipline, perforing desktop application automation to weekly demo.
+automation framework and CI pipline, writing script for server, web and desktop application to weekly demo.
 * 1st Rank holder in college and school.
 
 ## Reference
