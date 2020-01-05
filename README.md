@@ -10,7 +10,7 @@
 * [Author](#author)
 
 ## General info
-This assignment comprises end-to-end test script of binance.com. It covers below three scenarios:
+This assignment comprises end-to-end test script which covers below three scenarios:
 * Verify hompage data is loading properly.
 * Verify currency coversion formula is working properly.
 * Verify data is loaded and there is consistent stream of data.
